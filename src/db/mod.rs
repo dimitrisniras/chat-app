@@ -1,8 +1,9 @@
+use crate::errors::ChatError;
+
 use std::env;
 use mongodb::{options::ClientOptions, Client};
 use anyhow::{Context, Result};
 use log::info;
-use crate::errors::ChatError;
 
 pub async fn init() -> Result<Client> {
     let mongodb_uri = env::var("MONGODB_URI")
