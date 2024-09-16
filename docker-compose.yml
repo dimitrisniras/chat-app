@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  chat-app:
+    build: .
+    container_name: chat-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVER_URL="localhost"
+      - SERVER_PORT=8080
+      - MONGODB_URI="mongodb://host.docker.internal:27017" 
+      - MONGODB_DATABASE="chat_app"
+      - MONGODB_COLLECTION="messages"
+      - RUST_LOG="info"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017'}]}) }" | mongosh --port 27017 --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+
+volumes:
+  mongodb_data:
+  mongodb_config:
