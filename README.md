@@ -46,11 +46,50 @@ A scalable chat API built with Rust, utilizing WebSockets for real-time communic
     make run    # Run the server
     ```
 
+## Running with Docker
+
+You can use Docker and Docker Compose to easily build and run the chat API in a containerized environment.
+
+### Requirements
+
+- **Docker:** Make sure you have Docker and Docker Compose installed on your system. You can follow the instructions at [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
+
+### Steps
+
+1. **Build the Docker images:**
+
+   ```bash
+   make docker-build
+   ```
+
+2. **Start the containers:**
+
+    ```bash
+    make docker-up
+    ```
+
+3. **Access the application:**
+
+    - The chat API should now be accessible at `http://localhost:8080`.
+    - You can connect to the MongoDB instance using `mongodb://localhost:27017`
+
+4. **Stop the containers:**
+
+    ```bash
+    make docker-down
+    ```
+
+5. View logs:
+
+    ```bash
+    make docker-logs
+    ```
+
 ## Usage
 
 1. **Connect to the WebSocket server:**
 
-    - Use a WebSocket client library or tool to connect to `ws://<SERVER_URL>:<SERVER_PORT>` (replace `<SERVER_URL>` and `<SERVER_PORT>` with the values from your `.env` file).
+    - Use a WebSocket client library or tool to connect to `ws://SERVER_URL:SERVER_PORT` (replace `SERVER_URL` and `SERVER_PORT` with the values from your `.env` file).
 
 2. **Send and receive messages:**
 
