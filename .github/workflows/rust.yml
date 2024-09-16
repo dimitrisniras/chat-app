@@ -1,0 +1,22 @@
+name: Rust CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build
+      run: make build
+    - name: Run tests
+      run: make test
+    - name: Run Clippy
+      run: make clippy
+    - name: Run fmt
+      run: make fmt

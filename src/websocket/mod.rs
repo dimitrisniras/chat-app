@@ -1,11 +1,11 @@
-use crate::models::message::ChatMessage;
 use crate::errors::ChatError;
+use crate::models::message::ChatMessage;
 
-use mongodb::Client;
-use tokio::net::TcpStream;
-use tokio_tungstenite::{tungstenite::protocol::Message, accept_async};
 use futures_util::{SinkExt, StreamExt};
 use log::info;
+use mongodb::Client;
+use tokio::net::TcpStream;
+use tokio_tungstenite::{accept_async, tungstenite::protocol::Message};
 
 pub async fn handle_connection(stream: TcpStream, _db_client: Client) -> Result<(), ChatError> {
     let ws_stream = accept_async(stream).await?;
@@ -19,12 +19,12 @@ pub async fn handle_connection(stream: TcpStream, _db_client: Client) -> Result<
         match msg {
             Message::Text(text) => {
                 // Handle incoming text message
-                let message: ChatMessage = serde_json::from_str(&text)
-                    .map_err(|_| ChatError::InvalidMessageFormat)?;
+                let message: ChatMessage =
+                    serde_json::from_str(&text).map_err(|_| ChatError::InvalidMessageFormat)?;
 
                 // Send the updated message list back to the client
-                let json_response = serde_json::to_string(&message)
-                    .map_err(|_| ChatError::InvalidMessageFormat)?;
+                let json_response =
+                    serde_json::to_string(&message).map_err(|_| ChatError::InvalidMessageFormat)?;
 
                 sender.send(Message::Text(json_response)).await?;
             }
@@ -34,7 +34,7 @@ pub async fn handle_connection(stream: TcpStream, _db_client: Client) -> Result<
                 break;
             }
 
-            _ => { }
+            _ => {}
         }
     }
 

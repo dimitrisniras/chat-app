@@ -1,9 +1,9 @@
 use log::error;
 use tokio::net::TcpListener;
 
-mod init; 
 mod db;
 mod errors;
+mod init;
 mod logging;
 mod models;
 mod websocket;
