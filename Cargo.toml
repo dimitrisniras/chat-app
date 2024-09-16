@@ -4,3 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+mongodb = "2"
+dotenv = "0.15"
+actix-web = "4"
